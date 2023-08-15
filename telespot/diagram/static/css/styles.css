@@ -1,0 +1,53 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-image: url("https://foni.club/uploads/posts/2023-01/1674293445_foni-club-p-chernii-obichnii-fon-39.jpg");
+    background-size: cover;
+    background-position: center;
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    text-align: center;
+    padding: 20px;
+    color: white;
+}
+
+#cityForm label {
+    display: block;
+    margin-bottom: -10px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 18px;
+    color: #fff;
+}
+
+#cityForm label input[type="checkbox"] {
+    margin-right: 3px;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #345edb;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.diagram-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.diagram {
+    width: 100%;
+    max-width: 600px;
+    height: 400px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    padding: 10px;
+    display: none;
+}

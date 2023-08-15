@@ -1,0 +1,90 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagram</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Данные за год по городу</h1>
+        <form method="post" id="cityForm">
+            {% csrf_token %}
+            {% for city, _ in data.items %}
+            <label>
+                <input type="checkbox" name="city" value="{{ city }}" checked>
+                {{ city }}
+            </label><br>
+            {% endfor %}
+            <button type="submit">Применить</button>
+        </form>
+        <div class="diagram-container">
+            {% for city, city_data in data.items %}
+            <div id="{{ city|lower }}_diagram" class="diagram"></div>
+            <script>
+                var years = {{ city_data.years| safe }};
+                var plans = {{ city_data.plans| safe }};
+                var facts = {{ city_data.facts| safe }};
+                var cityData = {
+                    x: years,
+                    y: plans,
+                    type: 'bar',
+                    name: 'Запланированная прибыль',
+                    marker: {
+                        color: '#EEEEEE'
+                    }
+                };
+                var cityData2 = {
+                    x: years,
+                    y: facts,
+                    type: 'bar',
+                    name: 'Фактическая прибыль',
+                    marker: {
+                        color: '#89ECDA'
+                    }
+                };
+                var layout = {
+                    title: 'Данные за год для {{ city }}',
+                    xaxis: {
+                        title: 'Год'
+                    },
+                    yaxis: {
+                        title: 'Значение'
+                    },
+                    width: 600,
+                    height: 400,
+                    margin: {
+                        l: 50,
+                        r: 50,
+                        t: 50,
+                        b: 50
+                    }
+                };
+                Plotly.newPlot('{{ city|lower }}_diagram', [cityData, cityData2], layout);
+            </script>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("cityForm").addEventListener("submit", function (event) {
+            event.preventDefault();
+            var diagrams = document.querySelectorAll(".diagram");
+            diagrams.forEach(function (diagram) {
+                diagram.style.display = "none";
+            });
+            var selectedCities = new FormData(this).getAll("city");
+            selectedCities.forEach(function (city) {
+                var cityDiagram = document.getElementById(city.toLowerCase() + "_diagram");
+                cityDiagram.style.display = "block";
+            });
+        });
+    </script>
+</body>
+
+</html>
